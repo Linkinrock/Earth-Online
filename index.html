@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Earth Online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--sky1:#0b0b2e;--sky2:#2a1a5e;--win:#101a52;--win2:#0a1038;--edge:#f4f1e6;--gold:#ffd23f;--xp:#44e07a;--xp2:#1c9c4c;--ink:#f4f1e6;--mute:#9fb0e8;--red:#ff5d6c;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;font-weight:500;
+ background:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 120' preserveAspectRatio='none'%3E%3Cpath d='M0 120V70h20V60h20V40h20V55h30V35h20V50h30V30h20V50h40V65h30V45h20V60h30V75h40V55h30V70h40V120Z' fill='%23140f3d'/%3E%3Cpath d='M0 120V95h30V85h40V100h50V80h40V95h60V88h50V100h60V90h40V120Z' fill='%230a0824'/%3E%3C/svg%3E") bottom/100% 260px no-repeat fixed,
+  radial-gradient(2px 2px at 20px 30px,#fff,transparent),radial-gradient(2px 2px at 90px 80px,#ffe9a8,transparent),radial-gradient(2px 2px at 160px 20px,#fff,transparent),radial-gradient(2px 2px at 60px 130px,#fff,transparent),radial-gradient(2px 2px at 130px 150px,#9fb0e8,transparent),
+  linear-gradient(var(--sky1),var(--sky2));
+ background-size:100% 260px,180px 180px,180px 180px,180px 180px,180px 180px,180px 180px,100% 100%;
+ background-attachment:fixed,scroll,scroll,scroll,scroll,scroll,fixed;
+ background-repeat:no-repeat,repeat,repeat,repeat,repeat,repeat,no-repeat}
+main{max-width:640px;margin:0 auto;padding:28px 16px 56px}
+h1{font-family:"Press Start 2P","Noto Sans TC",monospace;font-size:1rem;line-height:1.6;margin:0 0 18px;color:var(--gold);text-shadow:3px 3px 0 #000;text-align:center}
+.win{background:linear-gradient(var(--win),var(--win2));border:4px solid var(--edge);border-radius:6px;box-shadow:0 0 0 4px #000,6px 6px 0 4px #000;padding:16px 18px;margin-bottom:26px}
+.set{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.set label{font-weight:900}
+input[type=date]{font:inherit;color:var(--ink);background:#000;border:2px solid var(--edge);border-radius:0;padding:8px 10px;color-scheme:dark}
+button{font:inherit;font-weight:900;color:#000;background:var(--gold);border:0;padding:9px 18px;cursor:pointer;box-shadow:inset -3px -3px 0 #b88a00,inset 3px 3px 0 #fff3a8}
+button:active{transform:translate(2px,2px)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--xp);outline-offset:2px}
+.err{color:var(--red);min-height:1.3em;margin:8px 0 0;font-weight:900}
+.lv{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.lv .tag{font-family:"Press Start 2P",monospace;color:var(--gold);font-size:1.1rem;text-shadow:3px 3px 0 #000}
+.lv .num{font-family:"Press Start 2P",monospace;font-size:clamp(3rem,16vw,5.5rem);line-height:1;text-shadow:5px 5px 0 #000,0 0 18px rgba(255,210,63,.45);color:#fff}
+.next{color:var(--mute);margin:6px 0 16px}
+.xprow{display:flex;justify-content:space-between;align-items:baseline;font-family:"Press Start 2P",monospace;font-size:.7rem;margin-bottom:8px;gap:8px;flex-wrap:wrap}
+.xprow b{color:var(--xp);font-size:.95rem;font-variant-numeric:tabular-nums}
+.xprow small{font-size:.6rem;color:var(--mute)}
+.bar{height:30px;background:#000;border:3px solid var(--edge);padding:3px;box-shadow:0 0 0 3px #000}
+.fill{height:100%;width:0;background:linear-gradient(var(--xp),var(--xp2));position:relative;transition:width .6s steps(12)}
+.fill::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 12px,rgba(0,0,0,.35) 12px 14px)}
+.msg{margin:16px 0 0;min-height:1.6em}
+.msg b{color:var(--gold)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.stat{border:2px solid var(--mute);background:rgba(0,0,0,.35);padding:10px 8px;text-align:center}
+.stat b{display:block;font-family:"Press Start 2P",monospace;font-size:.95rem;margin-bottom:8px;font-variant-numeric:tabular-nums}
+.stat span{color:var(--mute);font-size:.85rem}
+.levelup .num{animation:pop .9s steps(6) 3}
+@keyframes pop{50%{transform:scale(1.12)}}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}.levelup .num{animation:none}}
+</style>
+</head>
+<body>
+<main>
+ <h1>⚔ Earth Online ⚔</h1>
+ <section class="win">
+  <div class="set">
+   <label for="bd">出生日期</label>
+   <input type="date" id="bd">
+   <button id="save" type="button">儲存</button>
+  </div>
+  <p class="err" id="err" role="alert"></p>
+ </section>
+ <section class="win" id="hero">
+  <div class="lv"><span class="tag">LV</span><span class="num" id="lv">--</span></div>
+  <p class="next" id="next">輸入你的生日，開始冒險。</p>
+  <div class="xprow"><span>EXP</span><b id="pct">0.00%</b></div>
+  <div class="bar" role="progressbar" aria-label="經驗值" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="barwrap"><div class="fill" id="fill"></div></div>
+  <p class="msg" id="msg"></p>
+  <div class="stats">
+   <div class="stat"><b id="d1">--</b><span>已獲得經驗（天）</span></div>
+   <div class="stat"><b id="d2">--</b><span>距離升級（天）</span></div>
+   <div class="stat"><b id="d3">--</b><span>下一級</span></div>
+  </div>
+ </section>
+</main>
+<script>
+(function(){
+  var KEY="birthday-rpg:date",bd=null;
+  var $=function(i){return document.getElementById(i)};
+  function load(){try{return localStorage.getItem(KEY)}catch(e){return null}}
+  function store(v){try{localStorage.setItem(KEY,v)}catch(e){}}
+  function parse(s){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||"");return m?{y:+m[1],m:+m[2]-1,d:+m[3]}:null}
+  function bday(y){var t=new Date(y,bd.m,bd.d);if(t.getMonth()!==bd.m)t=new Date(y,2,1);return t}
+  function tick(){
+    if(!bd)return;
+    var now=new Date(),y=now.getFullYear(),last=bday(y),next;
+    if(last>now){next=last;last=bday(y-1)}else{next=bday(y+1)}
+    var done=now-last,p=Math.max(0,Math.min(100,done/(next-last)*100));
+    var level=last.getFullYear()-bd.y,day=864e5,since=Math.floor(done/day),left=Math.ceil((next-now)/day);
+    $("lv").textContent=level;
+    $("pct").textContent=p.toFixed(4)+"%";
+    $("fill").style.width=p+"%";
+    $("barwrap").setAttribute("aria-valuenow",p.toFixed(2));
+    $("d1").textContent=since.toLocaleString();
+    $("d2").textContent=left.toLocaleString();
+    $("d3").textContent="LV "+(level+1);
+    $("next").textContent="再累積 "+(100-p).toFixed(2)+"% 經驗，就能升到 LV "+(level+1);
+    var today=since===0;
+    $("hero").classList.toggle("levelup",today);
+    $("msg").innerHTML=today?"<b>★ 升級了！★</b> 生日快樂，你現在是 LV "+level+"！":"持續冒險，還有 <b>"+left+" 天</b>即可升級。";
+  }
+  function apply(v,save){
+    var p=parse(v),err=$("err");err.textContent="";
+    if(!p||p.y<1900||new Date(p.y,p.m,p.d)>new Date()){if(save)err.textContent="請輸入有效的出生日期（不能是未來）。";return}
+    bd=p;$("bd").value=v;if(save)store(v);tick();
+  }
+  $("save").addEventListener("click",function(){apply($("bd").value,true)});
+  $("bd").addEventListener("keydown",function(e){if(e.key==="Enter")apply($("bd").value,true)});
+  var s=load();if(s)apply(s,false);
+  setInterval(tick,1000);
+})();
+</script>
+</body>
+</html>
